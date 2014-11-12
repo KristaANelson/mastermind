@@ -6,14 +6,13 @@ class Answer
   end
 
   def sequence(level)
-    case
-    when level == 'm'
+    if level == 'm'
       @colors = %w(r g y b w)
       i = 5
-    when level == 'h'
+    elsif level == 'h'
       @colors = "rgybwp".chars
       i = 6
-    when level == "b"
+    else level == "b"
       @colors = 'rgby'.chars
       i = 4
     end

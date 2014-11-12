@@ -42,7 +42,7 @@ end
     end
 
     def play?
-      input.downcase == "p" || input.upcase == "play"
+      input.downcase == "p" || input.downcase == "play"
     end
 
     def instructions?
