@@ -1,30 +1,28 @@
 class Answer
+  attr_reader :answer, :colors, :i
 
   def initialize
     @answer = []
   end
 
-  def easy_sequence
-    colors = 'rgby'.chars
-    i = 4
-    create_sequence(colors, i)
+  def sequence(level)
+    case
+    when level == 'm'
+      @colors = %w(r g y b w)
+      i = 5
+    when level == 'h'
+      @colors = "rgybwp".chars
+      i = 6
+    when level == "b"
+      @colors = 'rgby'.chars
+      i = 4
+    end
+    make_answer(i)
   end
 
-  def medium_sequence
-    colors = "rgybw".chars
-    i = 5
-    create_sequence(colors, i)
-  end
-
-  def hard_sequence
-    colors = "rgybwp".chars
-    i = 6
-    create_sequence(colors, i)
-  end
-
-  def create_sequence(colors, i)
+  def make_answer(i)
     i.times do
-      @answer << colors.sample
+      @answer << @colors.sample
     end
     @answer
   end

@@ -14,20 +14,20 @@ class Messages
     (h)ard = 8 characters, 6 colors"
   end
 
-  def start_game
-    "I have genearated a level sequence with level.chars elements made up of level.possible_colors"
+  def start_game(i, colors)
+    "A sequence has been genearated a sequence with #{i} elements made up of of the following characters #{colors}."
   end
 
   def prompt_guess
     "What is your first guess?"
   end
 
-  def too_short
-    "Your guess is too short, try again with level.chars elements made up of level.possible_colors"
+  def too_short (i, colors)
+    "Your guess is too short, try again with #{i} elements made up of #{colors}"
   end
 
-  def too_long
-    "Your guess is too long, try again with level.chars elements made up of level.possible_colors"
+  def too_long(i, colors)
+    "Your guess is too long, try again with #{i} elements made up of #{colors}"
   end
 
   def guess_feedback(turn, input, num_correct_colors, num_correct_elements, num_correct_positions)
@@ -46,16 +46,16 @@ class Messages
   def invalid_entry
     "I do not recognize that, would you like to (p)lay, read the (i)nstructions, or (q)uit?"
   end
-  def invalid_guess
-    "say whaaa??"
-  end
+
   def next_guess(turn)
     "What is your next guess?"
   end
+
   def dont_go
     "Are you sure you want to go? (P)lay a new game or (q)uit?"
   end
+
   def invalid
-    "Guess contains invalid color"
+    "Invalid entry"
   end
 end

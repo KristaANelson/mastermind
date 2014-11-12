@@ -1,20 +1,23 @@
 class Game
 
-  attr_reader :instream, :outstream, :messages, :input, :turn, :answer
-
+  attr_reader :instream, :outstream, :messages, :input, :turn
   def initialize(instream, outstream)
     @turn = 0
     @instream = instream
     @outstream = outstream
     @messages = Messages.new
-    @answer = Answer.new.easy_sequence
-    @valid_colors = ['r','g','b','y']
   end
 
   def play
     puts @answer
     @start_time = Time.new
-    outstream.puts messages.start_game
+    outstream.puts messages.pick_level
+    outstream.print ">"
+    @level = instream.gets.chomp
+    @answer_creator = Answer.new
+    @answer = @answer_creator.sequence(@level)
+    puts @answer
+    outstream.puts messages.start_game(@answer.length, @answer_creator.colors)
     outstream.puts messages.prompt_guess
 
     until quit? || win?
@@ -25,11 +28,11 @@ class Game
         outstream.puts messages.dont_go
         outstream.print ">"
       elsif invalid_guess?
-        if @guess.size < 4
-          outstream.puts messages.too_short
-        elsif @guess.size > 4
-          outstream.puts messages.too_long
-        else !@guess.all? {|char| @valid_colors.include? char}
+        if @guess.size < @answer.size
+          outstream.puts messages.too_short(@answer.length, @answer_creator.colors)
+        elsif @guess.size > @answer.size
+          outstream.puts messages.too_long(@answer.length, @answer_creator.colors)
+        else !(@guess.all? {|char| @answer_creator.colors.include? char})
           outstream.puts messages.invalid
         end
       elsif win?
@@ -54,7 +57,7 @@ class Game
   end
 
   def invalid_guess?
-    !(@guess.size == @answer.size && @guess.all? {|char| @valid_colors.include? char})
+    !(@guess.size == @answer.size && @guess.all? {|char| @answer_creator.colors.include? char})
   end
 
   def turn
@@ -73,7 +76,7 @@ class Game
 
   def num_correct_positions
     correct = []
-    @guess.zip(answer).select do |g, a|
+    @guess.zip(@answer).select do |g, a|
     correct << g if g == a
     end
     correct.length
