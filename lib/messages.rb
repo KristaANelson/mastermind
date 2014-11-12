@@ -19,26 +19,26 @@ class Messages
   end
 
   def prompt_guess
-    "What's your guess?"
+    "What is your first guess?"
   end
-  def guess_too_short
+
+  def too_short
     "Your guess is too short, try again with level.chars elements made up of level.possible_colors"
   end
-  def guess_too_long
+
+  def too_long
     "Your guess is too long, try again with level.chars elements made up of level.possible_colors"
   end
+
   def guess_feedback(turn, input, num_correct_colors, num_correct_elements, num_correct_positions)
-    "Guess #{turn} '#{input}':
-    Number of correct colors:    #{num_correct_colors}
-    Number of correct elements:  #{num_correct_elements}
-    Number of correct positions: #{num_correct_positions}"
+    "Guess #{turn} = '#{input}'. Correct colors: #{num_correct_colors}, elements: #{num_correct_elements}, positions: #{num_correct_positions}"
   end
-  def congrats(answer,turn)
-    "Congratulations! You guessed the sequence #{answer} in #{turn} guesses over #{@time}! \n
-    Do you want to (p)lay again or (q)uit?"
+
+  def congrats(input, turn, time)
+    "Congratulations! You guessed the sequence '#{input}' in #{turn} turn(s) over #{time[0]} minutes, #{time[1]} seconds! \nDo you want to (p)lay again or (q)uit?"
   end
   def bye
-    "Are you sure you want to (p)lay again? "
+    "Goodbye!"
   end
   def how_to_play
     "Instructions go here"
@@ -50,6 +50,12 @@ class Messages
     "say whaaa??"
   end
   def next_guess(turn)
-    "You have taken #{turn} turn(s), what is your next guess?"
+    "What is your next guess?"
+  end
+  def dont_go
+    "Are you sure you want to go? (P)lay a new game or (q)uit?"
+  end
+  def invalid
+    "Guess contains invalid color"
   end
 end

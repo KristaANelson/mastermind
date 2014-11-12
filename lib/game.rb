@@ -1,6 +1,6 @@
 class Game
 
-  attr_reader :instream, :outstream, :messages, :input, :turn, :num_correct_elements, :answer
+  attr_reader :instream, :outstream, :messages, :input, :turn, :answer
 
   def initialize(instream, outstream)
     @turn = 0
@@ -8,45 +8,45 @@ class Game
     @outstream = outstream
     @messages = Messages.new
     @answer = Answer.new.easy_sequence
-    @guess = ''
-    @num_correct_elements = 0
+    @valid_colors = ['r','g','b','y']
   end
 
   def play
-    until quit? || win?
+    puts @answer
+    @start_time = Time.new
     outstream.puts messages.start_game
     outstream.puts messages.prompt_guess
-    outstream.print ">"
-      @input = instream.gets.strip
-      @guess = input.split(//)
-     if guess_too_short?
-      outstream.puts messages.guess_too_short
-    elsif guess_too_long?
-      outstream.puts messages.guess_too_long
-    elsif win?
-      turn
-      outstream.puts messages.congrats(@answer,@turn)
-    # elsif invalid_guess?
-    #   outstream.puts messages.invalid_guess
-    else
-      turn
 
-      outstream.puts messages.guess_feedback(@turn, @input, num_correct_colors, num_correct_elements, num_correct_positions)
-      outstream.puts messages.next_guess(@turn)
+    until quit? || win?
+      outstream.print ">"
+      @input = instream.gets.strip
+      @guess = @input.chars
+      if quit?
+        outstream.puts messages.dont_go
+        outstream.print ">"
+      elsif invalid_guess?
+        if @guess.size < 4
+          outstream.puts messages.too_short
+        elsif @guess.size > 4
+          outstream.puts messages.too_long
+        else !@guess.all? {|char| @valid_colors.include? char}
+          outstream.puts messages.invalid
+        end
+      elsif win?
+        turn
+        @stop_time = Time.new
+        outstream.puts messages.congrats(@input,@turn, time)
+        outstream.print ">"
+      else
+        turn
+        outstream.puts messages.guess_feedback(@turn, @input, num_correct_colors, num_correct_elements, num_correct_positions)
+        outstream.puts messages.next_guess(@turn)
+      end
     end
   end
-end
 
   def quit?
     @input == 'q' || @input == "quit"
-  end
-
-  def guess_too_short?
-    @input.size < 4
-  end
-
-  def guess_too_long?
-    @input.size > 4
   end
 
   def win?
@@ -54,7 +54,7 @@ end
   end
 
   def invalid_guess?
-    # @guess inlcudes a char other than level's choices
+    !(@guess.size == @answer.size && @guess.all? {|char| @valid_colors.include? char})
   end
 
   def turn
@@ -62,13 +62,12 @@ end
   end
 
   def num_correct_elements
-    puts @answer
     not_yet_guessed = @answer.dup
     @guess.each do |e|
       index = not_yet_guessed.find_index(e)
-      not_yet_guessed.delete_at(index) if index !=nil
+      not_yet_guessed.delete_at(index) if index
       end
-      @guess.length - not_yet_guessed.length
+    @guess.length - not_yet_guessed.length
   end
 
 
@@ -90,5 +89,8 @@ end
     @correct_count
   end
 
+  def time
+    mm, ss = (@stop_time - @start_time).to_i.divmod(60)
+  end
 
 end
