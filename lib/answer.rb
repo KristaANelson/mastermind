@@ -23,9 +23,9 @@ class Answer
       puts message.beginner
 
     else
-      puts default_beginner
       @colors = 'rgby'.chars
       i = 4
+      puts message.default_beginner
     end
     make_answer(i)
   end

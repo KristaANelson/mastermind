@@ -37,7 +37,7 @@ class Game
       outstream.print messages.pick_level
       level = instream.gets.chomp
       self.answer = answer_creator.sequence(level)
-      puts answer
+      puts answer.join.blue
       start
       outstream.print messages.start_game
     end
