@@ -14,27 +14,27 @@ class Messages
   end
 
   def start_game(i, colors)
-    "A sequence has been genearated a sequence with #{i} elements made up of of the following characters #{colors}."
+    "****A sequence has been genearated a sequence with #{i} elements made up of of the following characters #{colors}****.\nWhat is your first guess?\n> "
   end
 
   def prompt_guess
-    "What is your first guess?"
+    "What is your first guess?\n> "
   end
 
   def too_short (i, colors)
-    "Your guess is too short, try again with #{i} elements made up of #{colors}"
+    "Your guess is too short, try again with #{i} elements made up of #{colors}.\n> "
   end
 
   def too_long(i, colors)
-    "Your guess is too long, try again with #{i} elements made up of #{colors}"
+    "Your guess is too long, try again with #{i} elements made up of #{colors}.\n> "
   end
 
   def guess_feedback(turn, input, num_correct_colors, num_correct_elements, num_correct_positions)
-    "Guess #{turn} = '#{input}'. Correct colors: #{num_correct_colors}, elements: #{num_correct_elements}, positions: #{num_correct_positions}"
+    "Guess #{turn} = '#{input}'. Correct colors: #{num_correct_colors}, elements: #{num_correct_elements}, positions: #{num_correct_positions}.\nWhat is your next guess?\n> "
   end
 
   def congrats(input, turn, time)
-    "Congratulations! You guessed the sequence '#{input}' in #{turn} turn(s) and #{time[0]} minutes, #{time[1]} seconds! \nDo you want to (p)lay again or (q)uit?"
+    "Congratulations! You guessed the sequence '#{input}' in #{turn} turn(s) and #{time[0]} minutes, #{time[1]} seconds! \nDo you want to (p)lay again or (q)uit?\n> "
   end
   def bye
     "Goodbye!"
@@ -47,13 +47,6 @@ class Messages
     correct, elemets and positions. Keep guessing until you have the correct sequence! While playing, if
     you would like to start over with a new game enter (q)uit. \n\nWould you like to (p)lay or (q)uit? \n> "
   end
-  def invalid_entry
-    "I do not recognize that, would you like to (p)lay, read the (i)nstructions, or (q)uit?"
-  end
-
-  def next_guess(turn)
-    "What is your next guess?"
-  end
 
   def dont_go
     "Are you sure you want to go? (P)lay a new game or (q)uit?\n> "
@@ -64,6 +57,6 @@ class Messages
   end
 
   def try_again
-    "Invalid entry, try again"
+    "Invalid entry, try again.\n> "
   end
 end

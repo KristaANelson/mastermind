@@ -32,12 +32,12 @@ end
       when quit?
         outstream.puts messages.bye
       else
-        outstream.print messages.invalid_entry
+        outstream.print messages.invalid
       end
     end
 
     def play?
-      input.downcase == "p" || input.downcase == "play"
+      input.downcase == "p" || input.downcase ==  "play"
     end
 
     def instructions?

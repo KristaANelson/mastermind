@@ -7,12 +7,12 @@ class Game
     @instream = instream
     @outstream = outstream
     @messages = Messages.new
+    @input = ''
   end
 
   def play
     start_game
     until quit? || win?
-      outstream.print ">"
       @input = instream.gets.strip
       @guess = @input.chars
       if quit?
@@ -37,8 +37,7 @@ class Game
       @answer_creator = Answer.new
       @answer = @answer_creator.sequence(@level)
       puts @answer
-      outstream.puts messages.start_game(@answer.length, @answer_creator.colors)
-      outstream.puts messages.prompt_guess
+      outstream.print messages.start_game(@answer.length, @answer_creator.colors)
     end
   end
 
@@ -47,12 +46,11 @@ class Game
     colors = GuessChecker.num_correct_colors(@answer, @guess)
     positions = GuessChecker.num_correct_positions(@answer, @guess)
     elements = GuessChecker.num_correct_elements(@answer, @guess)
-    outstream.puts messages.guess_feedback(@turn, @input, colors, elements, positions)
-    outstream.puts messages.next_guess(@turn)
+    outstream.print messages.guess_feedback(@turn, @input, colors, elements, positions)
   end
 
   def quit?
-    @input == ('q' || "quit")
+    @input.downcase == 'q' || @input.downcase == "quit"
   end
 
   def win?
@@ -61,8 +59,7 @@ class Game
   def winning_response
     turn
     @stop_time = Time.new
-    outstream.puts messages.congrats(@input,@turn, time)
-    outstream.print ">"
+    outstream.print messages.congrats(@input,@turn, time)
   end
 
 
@@ -72,11 +69,11 @@ class Game
 
   def return_invalid_message
     if @guess.size < @answer.size
-      outstream.puts messages.too_short(@answer.length, @answer_creator.colors)
+      outstream.print messages.too_short(@answer.length, @answer_creator.colors)
     elsif @guess.size > @answer.size
-      outstream.puts messages.too_long(@answer.length, @answer_creator.colors)
+      outstream.print messages.too_long(@answer.length, @answer_creator.colors)
     else !(@guess.all? {|char| @answer_creator.colors.include? char})
-      outstream.puts messages.try_again
+      outstream.print messages.try_again
     end
   end
 
