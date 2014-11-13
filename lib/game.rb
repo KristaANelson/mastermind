@@ -56,15 +56,15 @@ class Game
   def win?
     @guess == @answer
   end
+
+  def invalid_guess?
+    !(@guess.size == @answer.size && @guess.all? {|char| @answer_creator.colors.include? char})
+  end
+
   def winning_response
     turn
     @stop_time = Time.new
     outstream.print messages.congrats(@input,@turn, time)
-  end
-
-
-  def invalid_guess?
-    !(@guess.size == @answer.size && @guess.all? {|char| @answer_creator.colors.include? char})
   end
 
   def return_invalid_message
