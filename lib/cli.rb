@@ -3,18 +3,18 @@ require 'messages'
 require 'answer'
 
 class CLI
-  attr_reader :input, :message, :instream, :outstream
+  attr_reader :input, :messages, :instream, :outstream
 
   def initialize(instream, outstream)
     @input = ""
-    @message = Messages.new
+    @messages = Messages.new
     @instream = instream
     @outstream = outstream
   end
 
   def call
     if quit? == false
-    outstream.print message.welcome
+    outstream.print messages.welcome
       until quit?
         @input = instream.gets.strip
         what_to_do
@@ -28,12 +28,11 @@ end
         game = Game.new(instream, outstream)
         game.play
       when instructions?
-        outstream.print message.instructions
+        outstream.print messages.instructions
       when quit?
-        outstream.puts message.bye
+        outstream.puts messages.bye
       else
-        outstream.puts "this???"
-        # messages.invalid_entry
+        outstream.print messages.invalid_entry
       end
     end
 

@@ -40,11 +40,12 @@ class Messages
     "Goodbye!"
   end
   def instructions
-    "A secret sequence will be created with a certain size and amount of colors based on the chosen level.
+    "Insturctions:
+    A secret sequence will be created with a certain size and amount of colors based on the chosen level.
     Try to guess the sequence by only entering the first letter of each color. For example a beginner guess
     would look like 'rgby'. Once you made your guess you will get feedback on the amount of colors you have
     correct, elemets and positions. Keep guessing until you have the correct sequence! While playing, if
-    you would like to start over with a new game enter (q)uit. \n Would you like to (p)lay or (q)uit? \n> "
+    you would like to start over with a new game enter (q)uit. \n\nWould you like to (p)lay or (q)uit? \n> "
   end
   def invalid_entry
     "I do not recognize that, would you like to (p)lay, read the (i)nstructions, or (q)uit?"
