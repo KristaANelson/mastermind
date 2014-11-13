@@ -39,7 +39,7 @@ class Game
       self.answer = answer_creator.sequence(level)
       puts answer
       start
-      outstream.print messages.start_game(answer.length, answer_creator.colors)
+      outstream.print messages.start_game
     end
   end
 

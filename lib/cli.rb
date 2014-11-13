@@ -1,6 +1,7 @@
 require 'game'
 require 'messages'
 require 'answer'
+require 'color'
 
 class CLI
   attr_reader :input, :messages, :instream, :outstream

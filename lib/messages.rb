@@ -1,21 +1,22 @@
 class Messages
   def welcome
-    puts "\n".ljust(80,"*")
+    puts "\n".ljust(80,"*").purple
     puts"\n"
-    puts "WELCOME TO MASTERMIND".center(80)
-    puts "\n".ljust(80,"*")
+    puts "WELCOME TO MASTERMIND".center(80).yellow
+    puts "\n".ljust(80,"*").purple
     print "\nWould you like to (p)lay, read the (i)nstructions, or (q)uit? \n> "
   end
 
   def pick_level
-    "Select your level\n\t
-    (b)eginner = 4 characters, 4 colors\n\t
-    (m)edium = 6 characters, 5 colors\n\t
-    (h)ard = 8 characters, 6 colors\n> "
+    puts "Select your level\n\t"
+    puts "(b)eginner = 4 characters, 4 colors\n\t".green
+    puts "(m)edium = 6 characters, 5 colors\n\t".yellow
+    puts "(h)ard = 8 characters, 6 colors\n".red
+    print "> "
   end
 
-  def start_game(i, colors)
-    "****A sequence has been genearated a sequence with #{i} elements made up of of the following characters #{colors}****.\nWhat is your first guess?\n> "
+  def start_game
+    "What is your first guess?\n> "
   end
 
   def prompt_guess
@@ -35,7 +36,8 @@ class Messages
   end
 
   def congrats(input, turn, time)
-    "Congratulations! You guessed the sequence '#{input}' in #{turn} turn(s) and #{time[0]} minutes, #{time[1]} seconds! \nDo you want to (p)lay again or (q)uit?\n> "
+    puts "Congratulations! You guessed the sequence '#{input}' in #{turn} turn(s) and #{time[0]} minutes, #{time[1]} seconds!".purple
+    "\nDo you want to (p)lay again or (q)uit?\n> "
   end
   def bye
     "Goodbye!"
@@ -60,4 +62,17 @@ class Messages
   def try_again
     "Invalid entry, try again.\n> "
   end
+
+  def beginner
+    "****A sequence has been genearated a sequence with 4 elements made up of of the following characters (#{'r'.red})ed (#{'b'.blue})lue (#{'g'.green})reen (#{'y'.yellow})ellow.****\n"
+  end
+
+  def medium
+    "****A sequence has been genearated a sequence with 5 elements made up of of the following characters (#{'r'.red})ed (#{'b'.blue})lue (#{'g'.green})reen (#{'y'.yellow})ellow (#{'w'.white})hite.****\n"
+  end
+
+  def hard
+    "****A sequence has been genearated a sequence with 5 elements made up of of the following characters (#{'r'.red})ed (#{'b'.blue})lue (#{'g'.green})reen (#{'y'.yellow})ellow (#{'w'.white})hite (#{'p'.purple})urple .****\n"
+  end
+
 end

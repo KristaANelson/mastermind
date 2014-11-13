@@ -1,22 +1,29 @@
 class Answer
-  attr_reader :answer, :colors, :i
+  attr_reader :answer, :colors, :i, :message
 
   def initialize
     @answer = []
+    @message = Messages.new
   end
 
   def sequence(level)
     if level == 'm'
       @colors = %w(r g y b w)
       i = 5
+      puts message.medium
+
     elsif level == 'h'
       @colors = "rgybwp".chars
       i = 6
+      puts message.hard
+
     elsif level == "b"
       @colors = 'rgby'.chars
       i = 4
+      puts message.beginner
+
     else
-      puts "I do not recognize '#{level}', I will start you with a beginner sequence"
+      puts default_beginner
       @colors = 'rgby'.chars
       i = 4
     end
