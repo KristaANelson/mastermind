@@ -1,7 +1,9 @@
 require 'guess_checker'
 class Game
 
-  attr_reader :instream, :outstream, :messages, :input, :turn
+  attr_reader :instream, :outstream, :messages, :input
+  attr_accessor :turn
+
   def initialize(instream, outstream)
     @turn = 0
     @instream = instream
@@ -16,7 +18,7 @@ class Game
       @input = instream.gets.strip
       @guess = @input.chars
       if quit?
-        outstream.print messages.dont_go
+        quit_message
       elsif invalid_guess?
         return_invalid_message
       elsif win?
@@ -42,7 +44,7 @@ class Game
   end
 
   def check_guess
-    turn
+    add_turn
     colors = GuessChecker.num_correct_colors(@answer, @guess)
     positions = GuessChecker.num_correct_positions(@answer, @guess)
     elements = GuessChecker.num_correct_elements(@answer, @guess)
@@ -61,13 +63,13 @@ class Game
     !(@guess.size == @answer.size && @guess.all? {|char| @answer_creator.colors.include? char})
   end
 
-  def winning_response
-    turn
+  def win_message
+    add_turn
     @stop_time = Time.new
     outstream.print messages.congrats(@input,@turn, time)
   end
 
-  def return_invalid_message
+  def invalid_message
     if @guess.size < @answer.size
       outstream.print messages.too_short(@answer.length, @answer_creator.colors)
     elsif @guess.size > @answer.size
@@ -77,8 +79,12 @@ class Game
     end
   end
 
-  def turn
-    @turn += 1
+  def quit_message
+    outstream.print messages.dont_go
+  end
+
+  def add_turn
+    self.turn += 1
   end
 
   def time
