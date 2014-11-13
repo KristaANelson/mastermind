@@ -35,13 +35,17 @@ class Messages
   end
 
   def congrats(input, turn, time)
-    "Congratulations! You guessed the sequence '#{input}' in #{turn} turn(s) over #{time[0]} minutes, #{time[1]} seconds! \nDo you want to (p)lay again or (q)uit?"
+    "Congratulations! You guessed the sequence '#{input}' in #{turn} turn(s) and #{time[0]} minutes, #{time[1]} seconds! \nDo you want to (p)lay again or (q)uit?"
   end
   def bye
     "Goodbye!"
   end
   def how_to_play
-    "Instructions go here"
+    "A secret sequence will be created with a certain size and amount of colors based on the chosen level.
+    Try to guess the sequence by only entering the first letter of each color. For example a beginner guess
+    would look like 'rgby'. Once you made your guess you will get feedback on the amount of colors you have
+    correct, elemets and positions. Keep guessing until you have the correct sequence! While playing, if
+    you would like to start over with a new game enter (q)uit. "
   end
   def invalid_entry
     "I do not recognize that, would you like to (p)lay, read the (i)nstructions, or (q)uit?"
