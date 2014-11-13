@@ -12,7 +12,11 @@ class Answer
     elsif level == 'h'
       @colors = "rgybwp".chars
       i = 6
-    else level == "b"
+    elsif level == "b"
+      @colors = 'rgby'.chars
+      i = 4
+    else
+      puts "I do not recognize '#{level}', I will start you with a beginner sequence"
       @colors = 'rgby'.chars
       i = 4
     end

@@ -1,7 +1,4 @@
-gem 'minitest'
-require 'minitest/autorun'
-require 'minitest/pride'
-require_relative '../lib/answer'
+require_relative 'test_helper'
 
 class AnswerTest < Minitest::Test
   def test_creates_an_easy_sequence_with_a_length_of_4
@@ -28,6 +25,22 @@ class AnswerTest < Minitest::Test
   def test_only_includes_possible_chars
     level = 'b'
     answer_colors = %w(r g y b)
+    answer_creator = Answer.new
+    answer = answer_creator.sequence(level)
+    assert answer.all? {|char| answer_colors.include? char}
+  end
+
+  def test_only_includes_possible_chars
+    level = 'm'
+    answer_colors = %w(r g y b w)
+    answer_creator = Answer.new
+    answer = answer_creator.sequence(level)
+    assert answer.all? {|char| answer_colors.include? char}
+  end
+
+  def test_only_includes_possible_chars
+    level = 'h'
+    answer_colors = %w(r g y b w p)
     answer_creator = Answer.new
     answer = answer_creator.sequence(level)
     assert answer.all? {|char| answer_colors.include? char}

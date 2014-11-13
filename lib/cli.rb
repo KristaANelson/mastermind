@@ -14,7 +14,7 @@ class CLI
 
   def call
     if quit? == false
-    outstream.print messages.welcome
+      messages.welcome
       until quit?
         @input = instream.gets.strip
         what_to_do

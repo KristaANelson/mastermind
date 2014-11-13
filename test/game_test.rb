@@ -1,20 +1,13 @@
-gem 'minitest'
-require 'minitest/autorun'
-require 'minitest/pride'
-require_relative '../lib/game'
-require_relative '../lib/messages'
-require_relative '../lib/answer'
+require_relative 'test_helper'
 
 class GameTest < Minitest::Test
-  def test_that_player_input_p_then_play_game
-    instream = $stdin
+  def test_keeps_track_of_turns
     outstream = $stdout
-    game = Game.new(instream,outstream)
-    game.play
-
-
-    # cli = CLI.new(instream, outstream)
-    # messages = Messages.new
-    # assert_equal messages.pick_level, cli.call
+    instream = $stdin
+    game =Game.new(outstream, instream)
+    game.add_turn
+    game.add_turn
+    game.add_turn
+    assert_equal 3, game.turn
   end
 end

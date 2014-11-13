@@ -1,9 +1,10 @@
 class Messages
   def welcome
-    "\n**************************************************************************\n
-                        WELCOME TO MASTERMIND
-     \n**************************************************************************
-     \nWould you like to (p)lay, read the (i)nstructions, or (q)uit? \n> "
+    puts "\n".ljust(80,"*")
+    puts"\n"
+    puts "WELCOME TO MASTERMIND".center(80)
+    puts "\n".ljust(80,"*")
+    print "\nWould you like to (p)lay, read the (i)nstructions, or (q)uit? \n> "
   end
 
   def pick_level

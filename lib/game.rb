@@ -1,8 +1,8 @@
 require 'guess_checker'
 class Game
 
-  attr_reader :instream, :outstream, :messages, :input
-  attr_accessor :turn
+  attr_reader :instream, :outstream, :messages, :answer_creator
+  attr_accessor :turn, :input, :guess, :answer, :start_time, :stop_time
 
   def initialize(instream, outstream)
     @turn = 0
@@ -10,19 +10,20 @@ class Game
     @outstream = outstream
     @messages = Messages.new
     @input = ''
+    @guess = ''
+    @answer_creator = Answer.new
   end
 
   def play
     start_game
     until quit? || win?
-      @input = instream.gets.strip
-      @guess = @input.chars
+      format_input
       if quit?
         quit_message
       elsif invalid_guess?
-        return_invalid_message
+        invalid_message
       elsif win?
-        winning_response
+        win_message
       else
         check_guess
       end
@@ -34,47 +35,46 @@ class Game
        outstream.puts messages.bye
      else
       outstream.print messages.pick_level
-      @level = instream.gets.chomp
-      @start_time = Time.new
-      @answer_creator = Answer.new
-      @answer = @answer_creator.sequence(@level)
-      puts @answer
-      outstream.print messages.start_game(@answer.length, @answer_creator.colors)
+      level = instream.gets.chomp
+      self.answer = answer_creator.sequence(level)
+      puts answer
+      start
+      outstream.print messages.start_game(answer.length, answer_creator.colors)
     end
   end
 
   def check_guess
     add_turn
-    colors = GuessChecker.num_correct_colors(@answer, @guess)
-    positions = GuessChecker.num_correct_positions(@answer, @guess)
-    elements = GuessChecker.num_correct_elements(@answer, @guess)
-    outstream.print messages.guess_feedback(@turn, @input, colors, elements, positions)
+    colors = GuessChecker.num_correct_colors(answer, guess)
+    positions = GuessChecker.num_correct_positions(answer, guess)
+    elements = GuessChecker.num_correct_elements(answer, guess)
+    outstream.print messages.guess_feedback(turn, input, colors, elements, positions)
   end
 
   def quit?
-    @input.downcase == 'q' || @input.downcase == "quit"
+    input.downcase == 'q' || input.downcase == "quit"
   end
 
   def win?
-    @guess == @answer
+    guess == answer
   end
 
   def invalid_guess?
-    !(@guess.size == @answer.size && @guess.all? {|char| @answer_creator.colors.include? char})
+    !(guess.size == answer.size && guess.all? {|char| answer_creator.colors.include? char})
   end
 
   def win_message
     add_turn
-    @stop_time = Time.new
-    outstream.print messages.congrats(@input,@turn, time)
+    stop
+    outstream.print messages.congrats(input, turn, total_time)
   end
 
   def invalid_message
-    if @guess.size < @answer.size
-      outstream.print messages.too_short(@answer.length, @answer_creator.colors)
-    elsif @guess.size > @answer.size
-      outstream.print messages.too_long(@answer.length, @answer_creator.colors)
-    else !(@guess.all? {|char| @answer_creator.colors.include? char})
+    if guess.size < answer.size
+      outstream.print messages.too_short(answer.length, answer_creator.colors)
+    elsif guess.size > answer.size
+      outstream.print messages.too_long(answer.length, answer_creator.colors)
+    else !(guess.all? {|char| answer_creator.colors.include? char})
       outstream.print messages.try_again
     end
   end
@@ -87,8 +87,22 @@ class Game
     self.turn += 1
   end
 
-  def time
-    mm, ss = (@stop_time - @start_time).to_i.divmod(60)
+  def total_time
+    mm, ss = (stop_time - start_time).to_i.divmod(60)
   end
+
+  def start
+    self.start_time = Time.new
+  end
+
+  def stop
+    self.stop_time = Time.new
+  end
+
+  def format_input
+    self.input = instream.gets.strip
+    self.guess = input.chars
+  end
+
 
 end
