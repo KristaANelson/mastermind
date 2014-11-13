@@ -1,17 +1,16 @@
 class Messages
   def welcome
-    "Welcome to MASTERMIND"
-  end
-
-  def play_ins_quit
-    "Would you like to (p)lay, read the (i)nstructions, or (q)uit?"
+    "\n**************************************************************************\n
+                        WELCOME TO MASTERMIND
+     \n**************************************************************************
+     \nWould you like to (p)lay, read the (i)nstructions, or (q)uit? \n> "
   end
 
   def pick_level
     "Select your level\n\t
     (b)eginner = 4 characters, 4 colors\n\t
     (m)edium = 6 characters, 5 colors\n\t
-    (h)ard = 8 characters, 6 colors"
+    (h)ard = 8 characters, 6 colors\n> "
   end
 
   def start_game(i, colors)
@@ -40,12 +39,12 @@ class Messages
   def bye
     "Goodbye!"
   end
-  def how_to_play
+  def instructions
     "A secret sequence will be created with a certain size and amount of colors based on the chosen level.
     Try to guess the sequence by only entering the first letter of each color. For example a beginner guess
     would look like 'rgby'. Once you made your guess you will get feedback on the amount of colors you have
     correct, elemets and positions. Keep guessing until you have the correct sequence! While playing, if
-    you would like to start over with a new game enter (q)uit. "
+    you would like to start over with a new game enter (q)uit. \n Would you like to (p)lay or (q)uit? \n> "
   end
   def invalid_entry
     "I do not recognize that, would you like to (p)lay, read the (i)nstructions, or (q)uit?"
@@ -56,10 +55,14 @@ class Messages
   end
 
   def dont_go
-    "Are you sure you want to go? (P)lay a new game or (q)uit?"
+    "Are you sure you want to go? (P)lay a new game or (q)uit?\n> "
   end
 
   def invalid
-    "Invalid entry"
+    "Invalid entry. Would you like to (p)lay, read the (i)nstructions, or (q)uit? \n> "
+  end
+
+  def try_again
+    "Invalid entry, try again"
   end
 end

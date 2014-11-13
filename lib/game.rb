@@ -1,3 +1,4 @@
+require 'guess_checker'
 class Game
 
   attr_reader :instream, :outstream, :messages, :input, :turn
@@ -9,87 +10,78 @@ class Game
   end
 
   def play
-    puts @answer
-    @start_time = Time.new
-    outstream.puts messages.pick_level
-    outstream.print ">"
-    @level = instream.gets.chomp
-    @answer_creator = Answer.new
-    @answer = @answer_creator.sequence(@level)
-    puts @answer
-    outstream.puts messages.start_game(@answer.length, @answer_creator.colors)
-    outstream.puts messages.prompt_guess
-
+    start_game
     until quit? || win?
       outstream.print ">"
       @input = instream.gets.strip
       @guess = @input.chars
       if quit?
-        outstream.puts messages.dont_go
-        outstream.print ">"
+        outstream.print messages.dont_go
       elsif invalid_guess?
-        if @guess.size < @answer.size
-          outstream.puts messages.too_short(@answer.length, @answer_creator.colors)
-        elsif @guess.size > @answer.size
-          outstream.puts messages.too_long(@answer.length, @answer_creator.colors)
-        else !(@guess.all? {|char| @answer_creator.colors.include? char})
-          outstream.puts messages.invalid
-        end
+        return_invalid_message
       elsif win?
-        turn
-        @stop_time = Time.new
-        outstream.puts messages.congrats(@input,@turn, time)
-        outstream.print ">"
+        winning_response
       else
-        turn
-        outstream.puts messages.guess_feedback(@turn, @input, num_correct_colors, num_correct_elements, num_correct_positions)
-        outstream.puts messages.next_guess(@turn)
+        check_guess
       end
     end
   end
 
+  def start_game
+    if quit?
+       outstream.puts messages.bye
+     else
+      outstream.print messages.pick_level
+      @level = instream.gets.chomp
+      @start_time = Time.new
+      @answer_creator = Answer.new
+      @answer = @answer_creator.sequence(@level)
+      puts @answer
+      outstream.puts messages.start_game(@answer.length, @answer_creator.colors)
+      outstream.puts messages.prompt_guess
+    end
+  end
+
+  def check_guess
+    turn
+    colors = GuessChecker.num_correct_colors(@answer, @guess)
+    positions = GuessChecker.num_correct_positions(@answer, @guess)
+    elements = GuessChecker.num_correct_elements(@answer, @guess)
+    outstream.puts messages.guess_feedback(@turn, @input, colors, elements, positions)
+    outstream.puts messages.next_guess(@turn)
+  end
+
   def quit?
-    @input == 'q' || @input == "quit"
+    @input == ('q' || "quit")
   end
 
   def win?
     @guess == @answer
   end
+  def winning_response
+    turn
+    @stop_time = Time.new
+    outstream.puts messages.congrats(@input,@turn, time)
+    outstream.print ">"
+  end
+
 
   def invalid_guess?
     !(@guess.size == @answer.size && @guess.all? {|char| @answer_creator.colors.include? char})
   end
 
+  def return_invalid_message
+    if @guess.size < @answer.size
+      outstream.puts messages.too_short(@answer.length, @answer_creator.colors)
+    elsif @guess.size > @answer.size
+      outstream.puts messages.too_long(@answer.length, @answer_creator.colors)
+    else !(@guess.all? {|char| @answer_creator.colors.include? char})
+      outstream.puts messages.try_again
+    end
+  end
+
   def turn
     @turn += 1
-  end
-
-  def num_correct_elements
-    not_yet_guessed = @answer.dup
-    @guess.each do |e|
-      index = not_yet_guessed.find_index(e)
-      not_yet_guessed.delete_at(index) if index
-      end
-    @guess.length - not_yet_guessed.length
-  end
-
-
-  def num_correct_positions
-    correct = []
-    @guess.zip(@answer).select do |g, a|
-    correct << g if g == a
-    end
-    correct.length
-  end
-
-  def num_correct_colors
-    @correct_count = 0
-    answer_dup = @answer.dup
-    @guess.each do |letter|
-      @correct_count += 1 if answer_dup.include?(letter)
-      answer_dup.delete(letter)
-    end
-    @correct_count
   end
 
   def time

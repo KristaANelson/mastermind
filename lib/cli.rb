@@ -14,9 +14,7 @@ class CLI
 
   def call
     if quit? == false
-    outstream.puts message.welcome
-    outstream.puts message.play_ins_quit
-    outstream.print ">"
+    outstream.print message.welcome
       until quit?
         @input = instream.gets.strip
         what_to_do
@@ -30,13 +28,11 @@ end
         game = Game.new(instream, outstream)
         game.play
       when instructions?
-        outstream.puts message.how_to_play
-        outstream.puts message.play_ins_quit
-        outstream.print ">"
+        outstream.print message.instructions
       when quit?
         outstream.puts message.bye
       else
-        outstream.puts "invalid_entry"
+        outstream.puts "this???"
         # messages.invalid_entry
       end
     end
